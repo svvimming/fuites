@@ -11,9 +11,9 @@ let testimg;
 let pink;
 
 function preload() {
-  // img = loadImage('../images/IMG_20200317_170411_hori.jpg');
+  // img = loadImage('fuites/blob/master/images/ohzone/ohzone0.png');
   for(let i=0; i<9; i++){
-    imgBufs[i] = loadImage('../images/ohzone/ohzone'+i+'.png');
+    imgBufs[i] = loadImage('fuites/blob/gh-pages/images/ohzone/ohzone'+i+'.png');
   }
 }
 
