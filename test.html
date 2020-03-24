@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+	<title>Wear and Tear and Glare</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<link rel="icon" type="image/png" sizes="174x174" href="./favicon.png">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/p5.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.1/addons/p5.dom.min.js"></script>
+
+  <style>
+  </style>
+</head>
+<body>
+
+	<script type="text/javascript">
+let img;
+let pink;
+  function setup() {
+  pink = color(255, 102, 204);
+  img = createImage(66, 66);
+  img.loadPixels();
+}
+function draw() {
+  for (let i = 0; i < 4 * (width * height / 2); i += 4) {
+    img.pixels[i] = red(pink);
+    img.pixels[i + 1] = green(pink)*mouseY/66;
+    img.pixels[i + 2] = blue(pink);
+    img.pixels[i + 3] = alpha(pink);
+  }
+  img.updatePixels();
+  image(img, 17, 17);
+}
+
+	</script>
+
+
+</body>
+</html>
