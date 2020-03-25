@@ -1,3 +1,6 @@
+var source;
+var divisions = 3;
+var subsections = Math.pow(divisions, 2);
 var imgBufs = [];
 var imgPixels = [];
 var fftimg;
@@ -6,15 +9,11 @@ var pixelData = [];
 var brightnessData = [];
 var brightnessCats = [];
 var brightnessRange = 0.4;
-
-let testimg;
-let pink;
+var ssIndex = 0;
+var imgIndex = 0;
 
 function preload() {
-  // img = loadImage('../images/IMG_20200317_170411_hori.jpg');
-  for(let i=0; i<9; i++){
-    imgBufs[i] = loadImage('../images/ohzone/ohzone'+i+'.png');
-  }
+  source = loadImage(imagePath);
 }
 
 function setup() {
@@ -26,6 +25,19 @@ function setup() {
   canvas.mouseReleased(freeImg);
 
   // frameP = createP();
+  // source.loadPixels();
+
+  for(let j=0; j<sqrt(subsections); j++){
+    for(let i=0; i<sqrt(subsections); i++){
+      imgBufs[ssIndex] = source.get(
+        floor(i*source.width/sqrt(subsections)),
+        floor(j*source.height/sqrt(subsections)),
+        floor(source.width/sqrt(subsections)),
+        floor(source.height/sqrt(subsections))
+      );
+      ssIndex++;
+    }
+  }
 
   for(let i=0; i<imgBufs.length; i++){
     imgBufs[i].loadPixels();
@@ -40,13 +52,6 @@ function setup() {
   pixelData = imgPixels[0];
 
 }
-
-
-
-
-// function windowResized() {
-//   resizeCanvas(windowWidth, windowHeight);
-// }
 
 function findBrightness(pixArray) {
   var data = [];
@@ -79,9 +84,6 @@ function RGBtoHSV(r, g, b) {
     return { h: h, s: s, v: v };
 }
 
-
-
-
 function pixelsToBins(arrayIn) {
   var bandSize = brightnessRange/windowSize;
   var array2DOut = [];
@@ -103,7 +105,6 @@ function pixelsToBins(arrayIn) {
   return array2DOut;
 }
 
-
 function draw() {
   background(0);
 
@@ -114,7 +115,9 @@ function draw() {
     text('click', 300, 300);
   }
 
-  var imgIndex = floor(constrain(level*9, 0, 8.999));
+  if(!hold){
+    imgIndex = floor(constrain(level*9, 0, 8.999));
+  }
   pixelData = imgPixels[imgIndex];
 
   for (let j=0; j<brightnessCats[imgIndex].length; j++) {
