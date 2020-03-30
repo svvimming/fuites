@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/p5.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/addons/p5.sound.js"></script>
+    <style>
+      html, body{
+        background: #42f57b;
+      }
+      button{
+        border-radius: 50%;
+        width: 200px;
+        height: 200px;
+        font-size: 20px;
+        animation-name: shwoom;
+        animation-duration: 7s;
+        animation-iteration-count: infinite;
+      }
+      @keyframes shwoom {
+        0% {margin-left: 20px}
+        50% {margin-left: 900px}
+        100%{margin-left: 20px}
+      }
+    </style>
+  </head>
+  <body>
+    <button onClick="playSound()">PLAY</button>
+    <button onClick="pauseSound()">PAUSE</button>
+
+
+    <!-- <audio id="soun">
+       <source src="http://mondayfiles.out.airtime.pro:8000/mondayfiles_a" type="audio/ogg">
+       <source src="http://mondayfiles.out.airtime.pro:8000/mondayfiles_a" type="audio/mpeg">
+      Your browser does not support the audio element.
+    </audio> -->
+
+    <audio id="soun">
+       <source src="road_snakes.mp3" type="audio/mpeg">
+      Your browser does not support the audio element.
+    </audio>
+
+    <script>
+     var soun = document.getElementById("soun");
+
+    function playSound() {
+        soun.play();
+    }
+
+    function pauseSound() {
+        soun.pause();
+    }
+
+    </script>
+  </body>
+</html>

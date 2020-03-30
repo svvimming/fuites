@@ -11,6 +11,7 @@ var brightnessCats = [];
 var brightnessRange = 0.4;
 var ssIndex = 0;
 var imgIndex = 0;
+var hold = false;
 
 function preload() {
   source = loadImage(imagePath);
@@ -21,7 +22,7 @@ function setup() {
   canvas = createCanvas(600, 600);
   canvas.parent('sketch-holder');
   canvas.id="booklet";
-  canvas.mousePressed(startBuf);
+  canvas.mousePressed(holdImg);
   canvas.mouseReleased(freeImg);
 
   // frameP = createP();
@@ -51,6 +52,7 @@ function setup() {
 
   pixelData = imgPixels[0];
 
+  showButtons();
 }
 
 function findBrightness(pixArray) {
@@ -105,15 +107,16 @@ function pixelsToBins(arrayIn) {
   return array2DOut;
 }
 
-function draw() {
-  background(0);
+function holdImg() {
+  hold = true;
+}
 
-  if(player.state == 'stopped'){
-    textSize(24);
-    fill(58, 20, 247);
-    textStyle(ITALIC);
-    text('click', 300, 300);
-  }
+function freeImg() {
+  hold = false;
+}
+
+function draw() {
+  clear();
 
   if(!hold){
     imgIndex = floor(constrain(level*9, 0, 8.999));
@@ -132,6 +135,4 @@ function draw() {
 
   fftimg.updatePixels();
   image(fftimg, 0, 0, 600, 600);
-
-  // frameP.html(floor(frameRate()));
 }
