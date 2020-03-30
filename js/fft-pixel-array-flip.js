@@ -1,3 +1,6 @@
+var source;
+var divisions = 3;
+var subsections = Math.pow(divisions, 2);
 var imgBufs = [];
 var imgPixels = [];
 var fftimg;
@@ -6,15 +9,12 @@ var pixelData = [];
 var brightnessData = [];
 var brightnessCats = [];
 var brightnessRange = 0.4;
-
-let testimg;
-let pink;
+var ssIndex = 0;
+var imgIndex = 0;
+var hold = false;
 
 function preload() {
-  // img = loadImage('fuites/blob/master/images/ohzone/ohzone0.png');
-  for(let i=0; i<9; i++){
-    imgBufs[i] = loadImage('fuites/blob/gh-pages/images/ohzone/ohzone'+i+'.png');
-  }
+  source = loadImage(imagePath);
 }
 
 function setup() {
@@ -22,10 +22,23 @@ function setup() {
   canvas = createCanvas(600, 600);
   canvas.parent('sketch-holder');
   canvas.id="booklet";
-  canvas.mousePressed(startBuf);
+  canvas.mousePressed(holdImg);
   canvas.mouseReleased(freeImg);
 
   // frameP = createP();
+  // source.loadPixels();
+
+  for(let j=0; j<sqrt(subsections); j++){
+    for(let i=0; i<sqrt(subsections); i++){
+      imgBufs[ssIndex] = source.get(
+        floor(i*source.width/sqrt(subsections)),
+        floor(j*source.height/sqrt(subsections)),
+        floor(source.width/sqrt(subsections)),
+        floor(source.height/sqrt(subsections))
+      );
+      ssIndex++;
+    }
+  }
 
   for(let i=0; i<imgBufs.length; i++){
     imgBufs[i].loadPixels();
@@ -39,14 +52,8 @@ function setup() {
 
   pixelData = imgPixels[0];
 
+  showButtons();
 }
-
-
-
-
-// function windowResized() {
-//   resizeCanvas(windowWidth, windowHeight);
-// }
 
 function findBrightness(pixArray) {
   var data = [];
@@ -79,9 +86,6 @@ function RGBtoHSV(r, g, b) {
     return { h: h, s: s, v: v };
 }
 
-
-
-
 function pixelsToBins(arrayIn) {
   var bandSize = brightnessRange/windowSize;
   var array2DOut = [];
@@ -103,18 +107,20 @@ function pixelsToBins(arrayIn) {
   return array2DOut;
 }
 
+function holdImg() {
+  hold = true;
+}
+
+function freeImg() {
+  hold = false;
+}
 
 function draw() {
-  background(0);
+  clear();
 
-  if(player.state == 'stopped'){
-    textSize(24);
-    fill(58, 20, 247);
-    textStyle(ITALIC);
-    text('click', 300, 300);
+  if(!hold){
+    imgIndex = floor(constrain(level*9, 0, 8.999));
   }
-
-  var imgIndex = floor(constrain(level*9, 0, 8.999));
   pixelData = imgPixels[imgIndex];
 
   for (let j=0; j<brightnessCats[imgIndex].length; j++) {
@@ -129,6 +135,4 @@ function draw() {
 
   fftimg.updatePixels();
   image(fftimg, 0, 0, 600, 600);
-
-  // frameP.html(floor(frameRate()));
 }
