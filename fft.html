@@ -9,43 +9,31 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.1/addons/p5.dom.min.js"></script>
 	<script src="https://unpkg.com/@webcomponents/webcomponentsjs@^2/webcomponents-bundle.js"></script>
   <script src="./Tone.js"></script>
-	<script src="./js/ui-master/build/tonejs-ui.js"></script>
   <style>
   body{
         margin: 0px;
         padding: 0px;
-        background-color: #75c1c9;
-        color: white;
-      }
-    #sketch-holder{
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      width: 600px;
-      height: 600px;
-      margin-left: -300px;
-      /* -1/2 width */
-      margin-top: -300px;
-      /* -1/2 height */
     }
+    h3{
+      position: absolute;
+      left: 45%;
+      top: 46%;
+      font-family: Arial, Helvetica, sans-serif;
+      font-style: italic;
+      color: #3a14f7;
+      z-index=1000;
+    }
+
   </style>
 </head>
 <body>
-
-<div id="sketch-holder">
-      <!-- Our sketch will go here! -->
-    </div>
+  
+  <h3 id="prompt">
+    click anywhere
+  </h3>
 
 	<script type="text/javascript">
-    
-    //******************************************* FILE LINKS *********************************************//
-		//PASTE AUDIO FILE PATH HERE vvvvv
-    const audioPath = "https://cdn.glitch.com/56bd83dd-cb42-4607-9eef-7f6e0bca98c0%2FOld%20Hope%20Reduced%20Version%201.mp3?v=1585933720221";
-    //PASTE IMAGE FILE PATH HERE vvvvv
-    const imagePath = "https://cdn.glitch.com/56bd83dd-cb42-4607-9eef-7f6e0bca98c0%2Fscrap%20chi.png?v=1585933019983";
-    //******************************************* FILE LINKS *********************************************//
-    
-    
+		//the player
     var level = 0;
     var hold = false;
     var bins = [];
@@ -60,11 +48,11 @@
     var fft = new Tone.FFT(windowSize);
 
 		var player = new Tone.GrainPlayer({
-			"url" : audioPath,
+			"url" : "https://cdn.glitch.com/56bd83dd-cb42-4607-9eef-7f6e0bca98c0%2FWear_tear_glare.mp3?v=1584983835184",
 			"loop" : true,
 			"grainSize" : 0.1,
 			"overlap" : 0.05,
-		}).fan(gain, Tone.Master);
+		}).chain(gain, Tone.Master);
 
     follower.connect(meter);
     gain.connect(fft);
@@ -80,7 +68,9 @@
     }
 
     Tone.Transport.scheduleRepeat(time => {
-      repeat(time);
+      if(!hold){
+        repeat(time);
+      }
     }, "8n");
     Tone.Transport.bpm.value = 600;
     Tone.Transport.start();
@@ -88,6 +78,7 @@
     function startBuf() {
       if(player.state == 'stopped'){
         player.start();
+        document.getElementById("prompt").style.visibility="hidden";
       } else {
         hold = true;
       }
@@ -95,11 +86,12 @@
 
     function freeImg() {
       hold = false;
+      console.log(bins);
     }
 
 	</script>
 
-  <script src="./fft-pixel-array-flip.js"></script>
+  <script src="./script.js"></script>
 
 </body>
 </html>
