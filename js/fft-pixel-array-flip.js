@@ -12,6 +12,12 @@ var brightnessRange = 0.4;
 var ssIndex = 0;
 var imgIndex = 0;
 var hold = false;
+var trackID;
+var idLetters = [];
+//all
+var reggie =  /^[a-z0-9]+$/i;
+//none
+var regged =  /[^a-z0-9]+$/i;
 
 function preload() {
   source = loadImage(imagePath);
@@ -24,6 +30,14 @@ function setup() {
   canvas.id="booklet";
   canvas.mousePressed(holdImg);
   canvas.mouseReleased(freeImg);
+
+  // var metaDataWords = trackID.split(" ");
+
+  // for(let i=0; i<metaDataWords.length; i++){
+  //   idLetters = metaDataWords[i][0].push;
+  // }
+
+  console.log(trackID);
 
   // frameP = createP();
   // source.loadPixels();
@@ -68,6 +82,10 @@ function findBrightness(pixArray) {
   }
   return data;
 }
+function reeg(n){
+    var fl = reggie.exec(n);
+    return fl;
+    }
 
 function RGBtoHSV(r, g, b) {
     var max = Math.max(r, g, b), min = Math.min(r, g, b),
@@ -107,6 +125,37 @@ function pixelsToBins(arrayIn) {
   return array2DOut;
 }
 
+function fetchMetaData() {
+  $.getJSON( 'https://mondayfiles.airtime.pro/api/live-info', function( data ) {
+    trackID = data.current.name;
+  });
+  if (typeof trackID == 'string' || typeof trackID == "string") {
+    idLetters = [];
+    var words = split(trackID, " ");
+    for (let i=0; i<words.length; i++){
+      var tarrr = [];
+      var fl = reeg(words[i]);
+      console.log("ola" + fl);
+      if(fl === null){
+        break;
+      } else {
+        var t = split(words[i], "");
+        tarrr.push(t[0]);
+
+          
+        console.log("tarra " + tarrr);
+      }
+      idLetters.push(tarrr[0]);
+      console.log("idLetters " + idLetters)
+
+      // idLetters[i] =
+    }
+  } else {
+    console.log('not a string');
+  }
+  console.log([trackID, words]);
+}
+
 function holdImg() {
   hold = true;
 }
@@ -117,6 +166,10 @@ function freeImg() {
 
 function draw() {
   clear();
+
+  if(frameCount % 150 == 0) {
+    fetchMetaData();
+  }
 
   if(!hold){
     imgIndex = floor(constrain(level*9, 0, 8.999));
