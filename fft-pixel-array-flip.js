@@ -2,8 +2,8 @@ var source;
 var divisions = 3;
 var subsections = Math.pow(divisions, 2);
 var imgBufs = [];
+var fftBufs = [];
 var imgPixels = [];
-var fftimg;
 var canvas;
 var pixelData = [];
 var brightnessData = [];
@@ -11,21 +11,21 @@ var brightnessCats = [];
 var brightnessRange = 0.4;
 var ssIndex = 0;
 var imgIndex = 0;
+var flip = 0;
 
 function preload() {
   source = loadImage(imagePath);
 }
 
 function setup() {
-  frameRate(30);
+  frameRate(fr);
   canvas = createCanvas(600, 600);
   canvas.parent('sketch-holder');
   canvas.id="booklet";
   canvas.mousePressed(startBuf);
   canvas.mouseReleased(freeImg);
 
-  // frameP = createP();
-  // source.loadPixels();
+  frameP = createP();
 
   for(let j=0; j<sqrt(subsections); j++){
     for(let i=0; i<sqrt(subsections); i++){
@@ -44,13 +44,10 @@ function setup() {
     imgPixels[i] = imgBufs[i].pixels;
     brightnessData[i] = findBrightness(imgPixels[i]);
     brightnessCats[i] = pixelsToBins(brightnessData[i]);
+    fftBufs[i] = createImage(imgBufs[0].width, imgBufs[0].height);
+    fftBufs[i].loadPixels();
   }
-
-  fftimg = createImage(imgBufs[0].width, imgBufs[0].height);
-  fftimg.loadPixels();
-
   pixelData = imgPixels[0];
-
 }
 
 function findBrightness(pixArray) {
@@ -105,6 +102,25 @@ function pixelsToBins(arrayIn) {
   return array2DOut;
 }
 
+function fftMapping(imageIndex, alpha) {
+  var fftbuf;
+  fftbuf = fftBufs[imageIndex];
+  // fftbuf.loadPixels();
+  var pixelDat;
+  pixelDat = imgPixels[imageIndex];
+  for (let j=0; j<brightnessCats[imageIndex].length; j++) {
+    for(let i=0; i<brightnessCats[imageIndex][j].length; i++) {
+      var index = brightnessCats[imageIndex][j][i]*4;
+      fftbuf.pixels[index] = pixelDat[index];
+      fftbuf.pixels[index+1] = pixelDat[index+1];
+      fftbuf.pixels[index+2] = pixelDat[index+2];
+      fftbuf.pixels[index+3] = floor(bins[j]*255*alpha);
+    }
+  }
+  fftbuf.updatePixels();
+  return fftbuf;
+}
+
 function draw() {
   clear();
 
@@ -115,23 +131,16 @@ function draw() {
     text('click', 300, 300);
   }
 
-  if(!hold){
-    imgIndex = floor(constrain(level*9, 0, 8.999));
+  if(!hold) {
+    flip = constrain(level*9, 0, 8.999);
   }
-  pixelData = imgPixels[imgIndex];
-
-  for (let j=0; j<brightnessCats[imgIndex].length; j++) {
-    for(let i=0; i<brightnessCats[imgIndex][j].length; i++) {
-      var index = brightnessCats[imgIndex][j][i]*4;
-      fftimg.pixels[index] = pixelData[index];
-      fftimg.pixels[index+1] = pixelData[index+1];
-      fftimg.pixels[index+2] = pixelData[index+2];
-      fftimg.pixels[index+3] = bins[j]*255;
+  for(let i=0; i<imgBufs.length; i++) {
+    if(i<=flip && flip<=(i+windowSine)) {
+      var alpha = sin((PI/windowSine)*(flip-i));
+      var img = fftMapping(i, alpha);
+      image(img, 0, 0, 600, 600);
     }
   }
 
-  fftimg.updatePixels();
-  image(fftimg, 0, 0, 600, 600);
-
-  // frameP.html(floor(frameRate()));
+  // frameP.html(letsee);
 }

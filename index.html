@@ -9,7 +9,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.1/addons/p5.dom.min.js"></script>
 	<script src="https://unpkg.com/@webcomponents/webcomponentsjs@^2/webcomponents-bundle.js"></script>
   <script src="./Tone.js"></script>
-	<script src="./js/ui-master/build/tonejs-ui.js"></script>
   <style>
   body{
         margin: 0px;
@@ -37,24 +36,35 @@
     </div>
 
 	<script type="text/javascript">
-    
+
     //******************************************* FILE LINKS *********************************************//
 		//PASTE AUDIO FILE PATH HERE vvvvv
     const audioPath = "https://cdn.glitch.com/56bd83dd-cb42-4607-9eef-7f6e0bca98c0%2FOld%20Hope%20Reduced%20Version%201.mp3?v=1585933720221";
     //PASTE IMAGE FILE PATH HERE vvvvv
-    const imagePath = "https://cdn.glitch.com/56bd83dd-cb42-4607-9eef-7f6e0bca98c0%2Fscrap%20chi.png?v=1585933019983";
+    const imagePath = "images/scrapchi_med.png";
     //******************************************* FILE LINKS *********************************************//
-    
-    
+
+
+    //******************************************* IMAGE VARIABLES ****************************************//
+    // high values demand more cpu and could crash the browser
+
+    var windowSize = 2048; //fft size. //Values must be a power of two between 16 to 2048, i.e. 16, 32, 64, 128, 256, 512, 1024, 2048
+    //higher numbers give a cool grainy effect
+
+    var fftClock = 600; //the frequency that program takes fft band amplitudes, in bpm
+    var windowSine = 3; //number of images that overlap at once, must be between 1 & 8
+    var fr = 20; //frame rate for the animation, max 60
+    //******************************************* IMAGE VARIABLES ****************************************//
+
+
     var level = 0;
     var hold = false;
     var bins = [];
     var fftData;
     var samprate = 44100;
-    var windowSize = 32;
     var binWidth = (samprate/(2*windowSize));
 
-    var follower = new Tone.Follower(0.05);
+    var follower = new Tone.Follower(0.3);
     var meter = new Tone.Meter();
     var gain = new Tone.Gain(4.0);
     var fft = new Tone.FFT(windowSize);
@@ -82,7 +92,7 @@
     Tone.Transport.scheduleRepeat(time => {
       repeat(time);
     }, "8n");
-    Tone.Transport.bpm.value = 600;
+    Tone.Transport.bpm.value = fftClock;
     Tone.Transport.start();
 
     function startBuf() {
