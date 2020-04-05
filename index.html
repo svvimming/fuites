@@ -54,6 +54,7 @@
     var fftClock = 600; //the frequency that program takes fft band amplitudes, in bpm
     var windowSine = 3; //number of images that overlap at once, must be between 1 & 8
     var fr = 20; //frame rate for the animation, max 60
+    var smoothing = 0.3; //smoothing for the amplitude follower, measured in seconds
     //******************************************* IMAGE VARIABLES ****************************************//
 
 
@@ -64,7 +65,7 @@
     var samprate = 44100;
     var binWidth = (samprate/(2*windowSize));
 
-    var follower = new Tone.Follower(0.3);
+    var follower = new Tone.Follower(smoothing);
     var meter = new Tone.Meter();
     var gain = new Tone.Gain(4.0);
     var fft = new Tone.FFT(windowSize);
