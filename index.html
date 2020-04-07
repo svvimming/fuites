@@ -25,8 +25,11 @@
         animation-duration: 7s;
         animation-iteration-count: infinite;
         z-index: 1000;
+        color: white;
       }
   h3{
+        background-image: url('radiolip/lip5.jpg');
+        background-size: cover;
         color: white;
         font-size: 20px;
         animation-name: shwoom;
@@ -64,7 +67,14 @@
       margin-top: -300px;
       z-index: -10;
     }
-
+    .lip1{
+      background-image: url('radiolip/lip4.jpg');
+      background-size: cover;
+    }
+    .lip2{
+      background-image: url('radiolip/lip1.jpg');
+      background-size: cover;
+    }
   </style>
 </head>
 <body>
@@ -72,8 +82,8 @@
     <h3>loading...</h3>
   </div>
 
-  <button class="hiding" onClick="playSound()">PLAY</button>
-  <button class="hiding" onClick="pauseSound()">PAUSE</button>
+  <button class="hiding lip1" onClick="playSound()">PLAY</button>
+  <button class="hiding lip2" onClick="pauseSound()">PAUSE</button>
   <audio id="monday-files" crossorigin="anonymous">
      <source src="https://mondayfiles.out.airtime.pro/mondayfiles_a" type="audio/mpeg">
   </audio>
