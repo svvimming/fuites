@@ -43,9 +43,9 @@
       visibility: visible;
     }
   @keyframes shwoom {
-        0% {margin-left: 20px}
-        50% {margin-left: 900px}
-        100%{margin-left: 20px}
+        0% {margin-top: 0px; margin-left: 0px;}
+        50% {margin-top: 600px; margin-left: 500px;}
+        100%{margin-top: 0px; margin-left: 0px;}
       }
     #screen{
       position: absolute;
@@ -59,12 +59,12 @@
 
     #sketch-holder{
       position: absolute;
-      left: 50%;
-      top: 50%;
+      /* left: 50%; */
+      top: 0;
       width: 600px;
-      height: 600px;
-      margin-left: -300px;
-      margin-top: -300px;
+      /* height: 600px; */
+      margin-left: 25%;
+      /* margin-top: -300px; */
       z-index: -10;
     }
     .lip1{
@@ -92,7 +92,7 @@
 
 	<script type="text/javascript">
 
-    const imagePath = "images/ohzone/ohzonelrgish.png";
+    const imagePath = "images/cri_000000011868.jpg";
 
     var level = 0;
     var bins = [];

@@ -19,7 +19,7 @@ function preload() {
 
 function setup() {
   frameRate(30);
-  canvas = createCanvas(600, 600);
+  canvas = createCanvas(windowHeight, windowHeight);
   canvas.parent('sketch-holder');
   canvas.id="booklet";
   canvas.mousePressed(holdImg);
@@ -134,5 +134,5 @@ function draw() {
   }
 
   fftimg.updatePixels();
-  image(fftimg, 0, 0, 600, 600);
+  image(fftimg, 0, 0, windowHeight, windowHeight);
 }
