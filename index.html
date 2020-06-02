@@ -7,7 +7,6 @@
 	<link rel="icon" type="image/png" sizes="174x174" href="./favicon.png">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/p5.js"></script>
   <script src="./js/Tone.js"></script>
-  <script src="./js/three.js"></script>
   <style>
   body{
         margin: 0px;
@@ -28,15 +27,16 @@
         animation-duration: 7s;
         animation-iteration-count: infinite;
         z-index: 1000;
+        color: white;
       }
 
     .herenow{
       visibility: visible;
     }
   @keyframes shwoom {
-        0% {margin-left: 20px}
-        50% {margin-left: 900px}
-        100%{margin-left: 20px}
+        0% {margin-top: 0px; margin-left: 0px;}
+        50% {margin-top: 600px; margin-left: 500px;}
+        100%{margin-top: 0px; margin-left: 0px;}
       }
 
     #sketch-holder{
@@ -44,18 +44,18 @@
       left: 45%;
       top: 45%;
       width: 600px;
-      height: 600px;
-      margin-left: -300px;
-      margin-top: -300px;
+      /* height: 600px; */
+      margin-left: 25%;
+      /* margin-top: -300px; */
       z-index: -10;
     }
-    #container {
-      position: absolute;
-      left: 0px;
-      top: 0px;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
+    .lip1{
+      background-image: url('radiolip/lip4.jpg');
+      background-size: cover;
+    }
+    .lip2{
+      background-image: url('radiolip/lip1.jpg');
+      background-size: cover;
     }
 
     .lip1{
@@ -72,10 +72,12 @@
 </head>
 <body>
 
+
 <div>
   <button class="lip1" onClick="playSound()">PLAY</button>
   <button class="lip2" onClick="pauseSound()">PAUSE</button>
 </div>
+
   <audio id="monday-files" crossorigin="anonymous">
      <source src="https://mondayfiles.out.airtime.pro/mondayfiles_a" type="audio/mpeg">
   </audio>
@@ -86,7 +88,7 @@
 
 	<script type="text/javascript">
 
-    const imagePath = "images/ohzone/ohzonemed.png";
+    const imagePath = "images/cri_000000011868.jpg";
 
     var level = 0;
     var bins = [];
@@ -151,7 +153,6 @@
 
   <script src="./js/sandpile-image.js"></script>
 
-<!-- <script src="js/videoblobs.js"></script> -->
 
 </body>
 </html>
