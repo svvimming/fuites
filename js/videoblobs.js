@@ -27,14 +27,12 @@ function init() {
   cam.add( pointLight );
   scene.add( cam );
 
+
   video = document.getElementById( 'bubbly' );
   video.play();
-
   bubbles = new THREE.VideoTexture( video );
-
   var parameters = { color: 0xffffff, map: bubbles };
-
-  var material = new THREE.MeshPhongMaterial( parameters );
+  var material = new THREE.MeshBasicMaterial( parameters );
 
   for(let i=0; i<20; i++) {
     object = new THREE.Mesh( new THREE.SphereBufferGeometry( 75, 20, 10 ), material );

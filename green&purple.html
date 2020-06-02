@@ -7,18 +7,17 @@
 	<link rel="icon" type="image/png" sizes="174x174" href="./favicon.png">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/p5.js"></script>
   <script src="./js/Tone.js"></script>
+  <script src="./js/three.js"></script>
   <style>
   body{
         margin: 0px;
         padding: 0px;
-        background-color: #ffffff;
+        background-color: #42f57b;
         color: white;
       }
 
   button{
-        position: relative;
         border-radius: 50%;
-        color: white;
         width: 200px;
         height: 200px;
         outline: none;
@@ -27,57 +26,62 @@
         animation-duration: 7s;
         animation-iteration-count: infinite;
         z-index: 1000;
-        color: white;
       }
-
+  h3{
+        color: white;
+        font-size: 20px;
+        animation-name: shwoom;
+        animation-duration: 7s;
+        animation-iteration-count: infinite;
+      }
+    .hiding{
+      visibility: hidden;
+    }
     .herenow{
       visibility: visible;
     }
   @keyframes shwoom {
-        0% {margin-top: 0px; margin-left: 0px;}
-        50% {margin-top: 600px; margin-left: 500px;}
-        100%{margin-top: 0px; margin-left: 0px;}
+        0% {margin-left: 20px}
+        50% {margin-left: 900px}
+        100%{margin-left: 20px}
       }
+    #screen{
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      width: 100%;
+      height: 100%;
+      background-color: #42f57b;
+      z-index: 9999;
+    }
 
     #sketch-holder{
       position: absolute;
-      left: 45%;
-      top: 45%;
+      left: 50%;
+      top: 50%;
       width: 600px;
-      /* height: 600px; */
-      margin-left: 25%;
-      /* margin-top: -300px; */
+      height: 600px;
+      margin-left: -300px;
+      margin-top: -300px;
       z-index: -10;
     }
-    .lip1{
-      background-image: url('radiolip/lip4.jpg');
-      background-size: cover;
+    #container {
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
     }
-    .lip2{
-      background-image: url('radiolip/lip1.jpg');
-      background-size: cover;
-    }
-
-    .lip1{
-          background-image: url('assets/yello-patch.png');
-          background-size: cover;
-        }
-        .lip2{
-          background-image: url('assets/rednesspatch.png');
-          background-size: cover;
-        }
-
-
   </style>
 </head>
 <body>
+  <div id="screen">
+    <h3>loading...</h3>
+  </div>
 
-
-<div>
-  <button class="lip1" onClick="playSound()">PLAY</button>
-  <button class="lip2" onClick="pauseSound()">PAUSE</button>
-</div>
-
+  <button class="hiding" onClick="playSound()">PLAY</button>
+  <button class="hiding" onClick="pauseSound()">PAUSE</button>
   <audio id="monday-files" crossorigin="anonymous">
      <source src="https://mondayfiles.out.airtime.pro/mondayfiles_a" type="audio/mpeg">
   </audio>
@@ -86,9 +90,14 @@
     <div id="container"></div>
 
 
+    <video muted id="bubbly" loop crossOrigin="anonymous" playsinline style="display:none">
+  <!-- <source src="assets/sintel.ogv" type='video/ogg; codecs="theora, vorbis"'> -->
+  <source src="images/bubbly.mov" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
+</video>
+
 	<script type="text/javascript">
 
-    const imagePath = "images/cri_000000011868.jpg";
+    const imagePath = "images/ohzone/ohzonemed.png";
 
     var level = 0;
     var bins = [];
@@ -151,8 +160,9 @@
 
 	</script>
 
-  <script src="./js/sandpile-image.js"></script>
+  <script src="./js/fft-pixel-array-flip.js"></script>
 
+<script src="js/videoblobs.js"></script>
 
 </body>
 </html>
