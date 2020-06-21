@@ -7,7 +7,6 @@
 	<link rel="icon" type="image/png" sizes="174x174" href="./favicon.png">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/p5.js"></script>
   <script src="./js/Tone.js"></script>
-  <script src="./js/three.js"></script>
   <style>
   body{
         margin: 0px;
@@ -49,14 +48,6 @@
       margin-top: -300px;
       z-index: -10;
     }
-    #container {
-      position: absolute;
-      left: 0px;
-      top: 0px;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-    }
 
     .lip1{
           background-image: url('assets/yello-patch.png');
@@ -75,82 +66,35 @@
   <button class="lip1" onClick="playSound()">PLAY</button>
   <button class="lip2" onClick="pauseSound()">PAUSE</button>
 </div>
-  <audio id="monday-files" crossorigin="anonymous">
-     <source src="https://mondayfiles.out.airtime.pro/mondayfiles_a" type="audio/mpeg">
+  <audio id="fuites" crossorigin="anonymous">
+     <source src="https://fuites.out.airtime.pro/fuites_a" type="audio/mpeg">
   </audio>
 
 <div id="sketch-holder"></div>
-    <div id="container"></div>
 
 
 	<script type="text/javascript">
 
-    const imagePath = "images/ohzone/ohzonemed.png";
-
-    var level = 0;
-    var bins = [];
-    var fftData;
-    var samprate = 44100;
-    var windowSize = 32;
-    var binWidth = (samprate/(2*windowSize));
-
-    var follower = new Tone.Follower(0.05);
-    var meter = new Tone.Meter();
-    var gain = new Tone.Gain(4.0);
-    var input = new Tone.Gain();
-    var fft = new Tone.FFT(windowSize);
-
     var audioCtx = Tone.context;
-    var mondayfiles = document.getElementById('monday-files');
-    var stream = audioCtx.createMediaElementSource(mondayfiles);
+    var input = new Tone.Gain();
+    var fuites = document.getElementById('fuites');
+    var stream = audioCtx.createMediaElementSource(fuites);
 
     Tone.connect(stream, input, [inputNum=0], [outputNum=0]);
-
-    follower.connect(meter);
-    gain.fan(fft, follower);
-    input.fan(gain, Tone.Master);
-
-    function repeat(time) {
-      var dBfs = meter.getLevel();
-      level = Math.pow(10, dBfs/20);
-      fftData = fft.getValue();
-      for(let i=0; i<windowSize; i++) {
-        bins[i] = Math.pow(10, fftData[i]/20) * binWidth * (i+1) * 0.1;
-      }
-    }
-
-    Tone.Transport.scheduleRepeat(time => {
-      repeat(time);
-    }, "8n");
-    Tone.Transport.bpm.value = 600;
-    Tone.Transport.start();
+    input.connect(Tone.Master);
 
     function playSound() {
       audioCtx.resume();
-      mondayfiles.play();
+      fuites.play();
     }
 
     function pauseSound() {
-      mondayfiles.pause();
-    }
-
-    function showButtons() {
-      var elmt = document.getElementById('screen');
-      elmt.style.width = "0px";
-      elmt.style.height = "0px";
-      elmt.style.top = "-1000px";
-      var buttons = document.getElementsByClassName('hiding');
-      for(let i=0; i<buttons.length; i++) {
-        buttons[i].classList.remove("hiding");
-        buttons[i].classList.add("herenow");
-      }
+      fuites.pause();
     }
 
 	</script>
 
   <script src="./js/sandpile-image.js"></script>
-
-<!-- <script src="js/videoblobs.js"></script> -->
 
 </body>
 </html>
